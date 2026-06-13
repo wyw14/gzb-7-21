@@ -52,6 +52,15 @@
                 <el-icon><ChatDotRound /></el-icon>
                 邀约主人练琴
               </el-button>
+              <el-button 
+                size="large" 
+                :type="isFavorited ? 'danger' : 'default'" 
+                :disabled="isOwner"
+                @click="handleToggleFavorite"
+              >
+                <el-icon><StarFilled v-if="isFavorited" /><Star v-else /></el-icon>
+                {{ isFavorited ? '已收藏' : '收藏' }}
+              </el-button>
             </div>
           </div>
           
@@ -176,7 +185,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { useUserStore } from '../stores/user'
 import { instrumentApi, borrowApi, invitationApi, reviewApi } from '../api'
 import { ElMessage, ElMessageBox } from 'element-plus'
-import { Goods, Medal, Location, Wallet, ChatDotRound, Document, User, Star, ChatLineSquare } from '@element-plus/icons-vue'
+import { Goods, Medal, Location, Wallet, ChatDotRound, Document, User, Star, StarFilled, ChatLineSquare } from '@element-plus/icons-vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -203,6 +212,7 @@ const inviteForm = reactive({
 })
 
 const isOwner = computed(() => userStore.userId === instrument.value?.ownerId)
+const isFavorited = computed(() => userStore.isFavorite(route.params.id))
 
 const estimatedFee = computed(() => {
   if (!borrowForm.dates || !instrument.value) return 0
@@ -288,6 +298,23 @@ const submitInvite = async () => {
     ElMessage.error('提交失败')
   } finally {
     submitting.value = false
+  }
+}
+
+const handleToggleFavorite = async () => {
+  if (!userStore.isLoggedIn) {
+    requireLogin()
+    return
+  }
+  try {
+    const result = await userStore.toggleFavorite(route.params.id)
+    if (result.isFavorited) {
+      ElMessage.success('收藏成功！')
+    } else {
+      ElMessage.success('已取消收藏')
+    }
+  } catch (e) {
+    ElMessage.error('操作失败')
   }
 }
 </script>

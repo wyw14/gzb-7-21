@@ -18,12 +18,14 @@
       "爱的罗曼史",
       "阿尔罕布拉宫的回忆"
     ],
+    "favoriteInstruments": ["i002"],
     "freeTimes": [
       "周六下午",
       "周日全天"
     ],
     "rating": 4.8,
     "reviewCount": 12,
+    "newbieGuideShown": true,
     "createdAt": "2025-10-01T10:00:00.000Z"
   },
   {
@@ -45,12 +47,14 @@
       "肖邦夜曲",
       "梦中的婚礼"
     ],
+    "favoriteInstruments": [],
     "freeTimes": [
       "工作日晚上",
       "周六上午"
     ],
     "rating": 4.9,
     "reviewCount": 28,
+    "newbieGuideShown": true,
     "createdAt": "2025-09-15T08:30:00.000Z"
   },
   {
@@ -71,12 +75,14 @@
       "铃木小提琴教程",
       "小星星变奏曲"
     ],
+    "favoriteInstruments": [],
     "freeTimes": [
       "周末全天",
       "周三晚上"
     ],
     "rating": 4.5,
     "reviewCount": 6,
+    "newbieGuideShown": true,
     "createdAt": "2025-11-01T14:20:00.000Z"
   },
   {
@@ -98,12 +104,14 @@
       "Take Five",
       "西班牙斗牛曲"
     ],
+    "favoriteInstruments": [],
     "freeTimes": [
       "周五晚上",
       "周日下午"
     ],
     "rating": 4.7,
     "reviewCount": 18,
+    "newbieGuideShown": true,
     "createdAt": "2025-08-20T16:00:00.000Z"
   },
   {
@@ -126,12 +134,14 @@
       "姑苏行",
       "平湖秋月"
     ],
+    "favoriteInstruments": [],
     "freeTimes": [
       "每天早晨",
       "周日下午"
     ],
     "rating": 4.6,
     "reviewCount": 9,
+    "newbieGuideShown": true,
     "createdAt": "2025-10-10T09:00:00.000Z"
   },
   {
@@ -147,9 +157,11 @@
     "skillLevel": "初级",
     "instruments": [],
     "favoritePieces": [],
+    "favoriteInstruments": [],
     "freeTimes": [],
     "rating": 5,
     "reviewCount": 0,
+    "newbieGuideShown": false,
     "createdAt": "2026-06-11T19:42:21.676Z"
   }
 ]

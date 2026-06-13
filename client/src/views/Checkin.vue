@@ -179,6 +179,7 @@ const submit = async () => {
       form.piece = ''
       form.duration = 60
       await loadData()
+      await userStore.refreshTasks()
     }
   } catch (e) {
     ElMessage.error('打卡失败')

@@ -25,7 +25,10 @@ export const userApi = {
   login: (data) => api.post('/users/login', data),
   getUser: (id) => api.get(`/users/${id}`),
   updateUser: (id, data) => api.put(`/users/${id}`, data),
-  listUsers: (params) => api.get('/users', { params })
+  listUsers: (params) => api.get('/users', { params }),
+  toggleFavorite: (userId, instrumentId) => api.post(`/users/${userId}/favorite/${instrumentId}`),
+  getTasks: (userId) => api.get(`/users/${userId}/tasks`),
+  updateNewbieGuide: (userId, shown) => api.put(`/users/${userId}/newbie-guide`, { shown })
 }
 
 export const instrumentApi = {

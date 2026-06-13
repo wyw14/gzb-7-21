@@ -35,6 +35,37 @@
                 </div>
               </div>
             </div>
+
+            <div class="tasks-card mb-20" v-if="userStore.tasks">
+              <div class="tasks-header">
+                <div class="tasks-title">
+                  <span class="tasks-icon">🎯</span>
+                  <h3>入门任务</h3>
+                  <span class="tasks-badge">{{ userStore.tasks.completedCount }}/{{ userStore.tasks.totalCount }}</span>
+                </div>
+                <el-button type="primary" size="small" @click="showGuide = true" v-if="!userStore.allTasksCompleted">
+                  查看任务
+                </el-button>
+                <span class="all-completed" v-else>
+                  <el-icon><CircleCheckFilled /></el-icon>
+                  全部完成
+                </span>
+              </div>
+              <el-progress :percentage="userStore.tasksProgress" :stroke-width="8" />
+              <div class="tasks-list">
+                <div 
+                  v-for="task in userStore.tasks.tasks" 
+                  :key="task.id" 
+                  class="task-item"
+                  :class="{ completed: task.completed }"
+                >
+                  <span class="task-icon">{{ task.icon }}</span>
+                  <span class="task-name">{{ task.title }}</span>
+                  <el-icon v-if="task.completed" class="task-check"><CircleCheckFilled /></el-icon>
+                  <span v-else class="task-pending">待完成</span>
+                </div>
+              </div>
+            </div>
             
             <el-form :model="form" label-width="100px">
               <el-form-item label="昵称">
@@ -172,6 +203,7 @@
         </el-tab-pane>
       </el-tabs>
     </div>
+    <NewbieGuide v-model="showGuide" />
   </div>
 </template>
 
@@ -181,7 +213,8 @@ import { useRouter } from 'vue-router'
 import { useUserStore } from '../stores/user'
 import { checkinApi, instrumentApi, reviewApi } from '../api'
 import { ElMessage, ElMessageBox } from 'element-plus'
-import { Check, Plus, Goods, ChatLineSquare } from '@element-plus/icons-vue'
+import { Check, Plus, Goods, ChatLineSquare, CircleCheckFilled } from '@element-plus/icons-vue'
+import NewbieGuide from '../components/NewbieGuide.vue'
 
 const router = useRouter()
 const userStore = useUserStore()
@@ -191,6 +224,7 @@ const saving = ref(false)
 const stats = ref(null)
 const myInstruments = ref([])
 const myReviews = ref([])
+const showGuide = ref(false)
 
 const form = reactive({
   ...(userStore.currentUser || {}),
@@ -215,6 +249,7 @@ onMounted(async () => {
   try {
     myReviews.value = await reviewApi.list({ revieweeId: userStore.userId })
   } catch (e) {}
+  await userStore.refreshTasks()
 })
 
 const randomAvatar = () => {
@@ -232,6 +267,7 @@ const saveProfile = async () => {
     const result = await userStore.updateUser({ ...form })
     if (result.success) {
       ElMessage.success('保存成功！')
+      await userStore.refreshTasks()
     }
   } catch (e) {
     ElMessage.error('保存失败')
@@ -423,6 +459,99 @@ const deleteInstrument = async (inst) => {
   color: var(--text-secondary);
 }
 
+.tasks-card {
+  padding: 20px 24px;
+  background: linear-gradient(135deg, #f0f4ff 0%, #faf5ff 100%);
+  border-radius: 12px;
+  border: 1px solid #e0e7ff;
+}
+
+.tasks-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.tasks-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.tasks-title h3 {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0;
+  color: var(--text-primary);
+}
+
+.tasks-icon {
+  font-size: 20px;
+}
+
+.tasks-badge {
+  background: var(--primary-color);
+  color: white;
+  padding: 2px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.all-completed {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: #16a34a;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.tasks-list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.task-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  background: white;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  transition: all 0.3s;
+}
+
+.task-item.completed {
+  background: #f0fdf4;
+  border-color: #86efac;
+}
+
+.task-item .task-icon {
+  font-size: 18px;
+}
+
+.task-item .task-name {
+  flex: 1;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.task-item .task-check {
+  color: #22c55e;
+  font-size: 16px;
+}
+
+.task-item .task-pending {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
 @media (max-width: 900px) {
   .profile-top {
     flex-direction: column;
@@ -434,6 +563,9 @@ const deleteInstrument = async (inst) => {
   }
   .grid-4 {
     grid-template-columns: 1fr 1fr;
+  }
+  .tasks-list {
+    grid-template-columns: 1fr;
   }
 }
 </style>

@@ -38,5 +38,15 @@
     "notes": "扫弦节奏终于稳了一些",
     "photo": "",
     "createdAt": "2026-06-11T21:00:00.000Z"
+  },
+  {
+    "id": "c48677d5c",
+    "userId": "u6502f7b2",
+    "instrument": "古典吉他",
+    "piece": "",
+    "duration": 60,
+    "notes": "",
+    "photo": "",
+    "createdAt": "2026-06-12T21:11:54.302Z"
   }
 ]
